@@ -12,19 +12,16 @@ public class BlockManager : MonoBehaviour
 
 
     [SerializeField]
-    Vector3 stack_offset = new Vector3(7.5f, 0f, 0f);
+    public float stack_offset = 7.5f;
 
     [SerializeField]
-    Vector3 initialPosition_XAxis = new Vector3(-9f, 0.3f, 0f);
+    public Vector3 initialPosition_XAxis = new Vector3(-9f, 0.3f, 0f);
 
     [SerializeField]
-    Vector3 offset_XAxis = new Vector3(1.5f, 0f, 0f);
+    public float block_offset = 1.5f;
 
     [SerializeField]
-    Vector3 initialPosition_ZAxis = new Vector3(-7.5f, 0.3f, -1.5f);
-
-    [SerializeField]
-    Vector3 offset_ZAxis = new Vector3(0f, 0f, 1.5f);
+    public Vector3 initialPosition_ZAxis = new Vector3(-7.5f, 0.3f, -1.5f);
 
     [SerializeField]
     float block_height = .6f;
@@ -41,9 +38,13 @@ public class BlockManager : MonoBehaviour
     [SerializeField]
     Vector3 labelOffset = new Vector3(0f, 0f, -1f);
 
+    public const int NumberOfStacks = 3;
+
     public static BlockManager Instance;
 
     Dictionary<string, List<Block>> stacks = new Dictionary<string, List<Block>>();
+
+    public bool isReady = false;
 
     void Awake()
     {
@@ -75,6 +76,12 @@ public class BlockManager : MonoBehaviour
         {
             if (!stacks.ContainsKey(blockInfo.grade))
             {
+                if( grades != null && grades.Count == NumberOfStacks )
+                {
+                    // maximum number of stacks reached. ignore rest of the blocks
+                    isReady = true;
+                    return;
+                }
                 List<Block> stack = new List<Block>();
                 stacks.Add(blockInfo.grade, stack);
 
@@ -84,9 +91,9 @@ public class BlockManager : MonoBehaviour
             int index = stacks[blockInfo.grade].Count;  // index of new block in current stack
             bool x_axis_align = (index / blocksPerRow) % 2 != 0;
 
-            Vector3 blockPosition = grades.IndexOf(blockInfo.grade) * stack_offset;
+            Vector3 blockPosition = grades.IndexOf(blockInfo.grade) * stack_offset * Vector3.right;
             blockPosition += x_axis_align ? initialPosition_XAxis : initialPosition_ZAxis;
-            blockPosition += (x_axis_align ? offset_XAxis : offset_ZAxis) * (index % blocksPerRow);
+            blockPosition += (x_axis_align ? Vector3.right : Vector3.forward) * block_offset * (index % blocksPerRow);
             blockPosition += index / blocksPerRow * block_height * Vector3.up;
 
             Block block = Instantiate(blockPrefab, blockPosition, x_axis_align ? Quaternion.AngleAxis(90f, Vector3.up) : Quaternion.identity, blocksParent);
@@ -101,6 +108,8 @@ public class BlockManager : MonoBehaviour
                 label.UpdateText(blockInfo.grade);
             }
         }
+
+        isReady = true;
     }
     
     public Material GetBlockMaterial(BlockType blockType)
