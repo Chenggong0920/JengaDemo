@@ -148,4 +148,21 @@ public class BlockManager : MonoBehaviour
         block.UpdateMaterial(true);
         prevSelectedBlock = block;
     }
+
+    public void TestStack(int stackIndex)
+    {
+        if (stackIndex >= stacks.Count)
+            return;
+
+        List<string> grades = new List<string>(stacks.Keys);
+
+        for(int i = 0; i < stacks[grades[stackIndex]].Count; i ++ )
+        {
+            if (stacks[grades[stackIndex]][i].blockType == BlockType.Glass)
+            {
+                stacks[grades[stackIndex]][i].Remove();
+                stacks[grades[stackIndex]].RemoveAt(i--);
+            }
+        }
+    }
 }

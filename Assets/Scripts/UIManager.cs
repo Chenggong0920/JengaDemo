@@ -17,16 +17,21 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     private TextMeshProUGUI txtDetails;
 
+    [SerializeField]
+    private Button testStackButton;
+
     void Start()
     {
         prevButton.onClick.AddListener(OnPrevButtonClicked);
         nextButton.onClick.AddListener(OnNextButtonClicked);
+        testStackButton.onClick.AddListener(OnTestStackClicked);
     }
 
     void Update()
     {
         prevButton.interactable = BlockManager.Instance.isReady && currentStackSelected != 0;
         nextButton.interactable = BlockManager.Instance.isReady && currentStackSelected < BlockManager.NumberOfStacks - 1;
+        testStackButton.interactable = BlockManager.Instance.isReady;
 
         if (Input.GetMouseButtonDown(1))
         {
@@ -68,5 +73,10 @@ public class UIManager : MonoBehaviour
     {
         if (txtDetails)
             txtDetails.text = string.Format("{0}: {1}\n{2}\n{3}", grade, domain, cluster, standarddescription);
+    }
+
+    void OnTestStackClicked()
+    {
+        BlockManager.Instance.TestStack(currentStackSelected);
     }
 }

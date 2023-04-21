@@ -35,4 +35,9 @@ public class Block : MonoBehaviour
         Material material = isSelected?BlockManager.Instance.GetSelectedBlockMaterial(): BlockManager.Instance.GetBlockMaterial(blockType);
         GetComponent<MeshRenderer>().material = material;
     }
+
+    public void Remove()
+    {
+        Destroy(gameObject);
+    }
 }

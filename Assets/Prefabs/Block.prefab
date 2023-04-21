@@ -464,9 +464,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 08c90b2ca72644641aa8085cd0ebaa50, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gradeLabels:
-  - {fileID: 515336682515415875}
-  - {fileID: 515336681545234833}
 --- !u!54 &515336681853893220
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -479,7 +476,7 @@ Rigidbody:
   m_Drag: 0
   m_AngularDrag: 0.05
   m_UseGravity: 1
-  m_IsKinematic: 1
+  m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
