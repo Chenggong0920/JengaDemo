@@ -24,6 +24,6 @@ public class APIHandler : MonoBehaviour
         string responseData = www.downloadHandler.text;
 
         if (onReceivedStacks != null)
-            onReceivedStacks(new List<Stack>(JsonHelper.FromJson<Stack>(responseData)));
+            onReceivedStacks(new List<BlockInfo>(JsonHelper.FromJson<BlockInfo>(responseData)));
     }
 }

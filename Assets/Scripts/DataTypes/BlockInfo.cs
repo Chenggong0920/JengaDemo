@@ -1,9 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
-public class Stack
+public class BlockInfo
 {
     public string id;
     public string subject;
