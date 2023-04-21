@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class UIManager : MonoBehaviour
 {
@@ -13,6 +14,9 @@ public class UIManager : MonoBehaviour
 
     private int currentStackSelected = 1;
 
+    [SerializeField]
+    private TextMeshProUGUI txtDetails;
+
     void Start()
     {
         prevButton.onClick.AddListener(OnPrevButtonClicked);
@@ -23,6 +27,22 @@ public class UIManager : MonoBehaviour
     {
         prevButton.interactable = BlockManager.Instance.isReady && currentStackSelected != 0;
         nextButton.interactable = BlockManager.Instance.isReady && currentStackSelected < BlockManager.NumberOfStacks - 1;
+
+        if (Input.GetMouseButtonDown(1))
+        {
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+            RaycastHit hit;
+            if (Physics.Raycast(ray, out hit, Mathf.Infinity, LayerMask.GetMask("Block")))
+            {
+                Block block = hit.collider.gameObject.GetComponent<Block>();
+                if( block )
+                {
+                    UpdateDetails(block.grade, block.domain, block.cluster, block.standarddescription);
+                    BlockManager.Instance.OnBlockSelected(block);
+                }
+            }
+        }
     }
 
     void OnPrevButtonClicked()
@@ -42,5 +62,11 @@ public class UIManager : MonoBehaviour
     void OnStackIndexUpdated()
     {
         Camera.main.BroadcastMessage("OnStackSelected", currentStackSelected, SendMessageOptions.DontRequireReceiver);
+    }
+
+    void UpdateDetails(string grade, string domain, string cluster, string standarddescription)
+    {
+        if (txtDetails)
+            txtDetails.text = string.Format("{0}: {1}\n{2}\n{3}", grade, domain, cluster, standarddescription);
     }
 }

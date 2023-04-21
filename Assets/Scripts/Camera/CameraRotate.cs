@@ -1,20 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
+
 
 public class CameraRotate : MonoBehaviour
 {
     public Vector3 rotateCenter;
     public float rotateSpeed = 120f;
 
-    private bool stacksReady = false;
-
     void Update()
     {
-        if (!stacksReady)
-            return;
-
-        if (Input.GetMouseButton(0))
+        if (Input.GetMouseButton(0) && !EventSystem.current.IsPointerOverGameObject())
         {
             float mouseX = Input.GetAxis("Mouse X");
             float mouseY = Input.GetAxis("Mouse Y");
@@ -28,7 +25,5 @@ public class CameraRotate : MonoBehaviour
     public void OnStackSelected(int stackIndex)
     {
         rotateCenter = new Vector3(BlockManager.Instance.initialPosition_ZAxis.x + stackIndex * BlockManager.Instance.stack_offset, 0f, 0f);
-
-        stacksReady = true;
     }
 }

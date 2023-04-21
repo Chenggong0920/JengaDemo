@@ -36,6 +36,9 @@ public class BlockManager : MonoBehaviour
     Material[] blockMaterials;
 
     [SerializeField]
+    Material selectedBlockMaterial;
+
+    [SerializeField]
     Vector3 labelOffset = new Vector3(0f, 0f, -1f);
 
     public const int NumberOfStacks = 3;
@@ -45,6 +48,8 @@ public class BlockManager : MonoBehaviour
     Dictionary<string, List<Block>> stacks = new Dictionary<string, List<Block>>();
 
     public bool isReady = false;
+
+    private Block prevSelectedBlock = null;
 
     void Awake()
     {
@@ -112,6 +117,11 @@ public class BlockManager : MonoBehaviour
         isReady = true;
     }
     
+    public Material GetSelectedBlockMaterial()
+    {
+        return selectedBlockMaterial;
+    }
+
     public Material GetBlockMaterial(BlockType blockType)
     {
         if( blockMaterials == null || blockMaterials.Length == 0 )
@@ -125,5 +135,17 @@ public class BlockManager : MonoBehaviour
 
         Debug.LogError("Material Index out of range. Please assign more materials");
         return null;
+    }
+
+    public void OnBlockSelected(Block block)
+    {
+        if (block == null)
+            return;
+
+        if (prevSelectedBlock)
+            prevSelectedBlock.UpdateMaterial(false);
+
+        block.UpdateMaterial(true);
+        prevSelectedBlock = block;
     }
 }

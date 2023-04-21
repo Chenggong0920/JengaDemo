@@ -12,8 +12,8 @@ public class Block : MonoBehaviour
     public string cluster { get; private set; }
     public string standarddescription { get; private set; }
 
-    [SerializeField]
-    TextMeshProUGUI[] gradeLabels;
+    //[SerializeField]
+    //TextMeshProUGUI[] gradeLabels;
 
     public void Init(BlockInfo blockInfo)
     {
@@ -23,11 +23,16 @@ public class Block : MonoBehaviour
         cluster = blockInfo.cluster;
         standarddescription = blockInfo.standarddescription;
 
-        // modify material;
-        Material material = BlockManager.Instance.GetBlockMaterial(blockType);
-        GetComponent<MeshRenderer>().material = material;
+        UpdateMaterial();
 
-        foreach (TextMeshProUGUI gradeLabel in gradeLabels)
-            gradeLabel.text = grade;
+        //foreach (TextMeshProUGUI gradeLabel in gradeLabels)
+        //    gradeLabel.text = grade;
+    }
+
+    public void UpdateMaterial(bool isSelected = false)
+    {
+        // modify material
+        Material material = isSelected?BlockManager.Instance.GetSelectedBlockMaterial(): BlockManager.Instance.GetBlockMaterial(blockType);
+        GetComponent<MeshRenderer>().material = material;
     }
 }

@@ -15,9 +15,7 @@ public class CameraMovement : MonoBehaviour
     [SerializeField]
     private float transitionDuration = 1f;
 
-    private float transitionTime = 0f;
-
-    private bool stacksReady = false;
+    private float transitionTime = Mathf.Infinity;
 
     // Start is called before the first frame update
     void Start()
@@ -29,10 +27,6 @@ public class CameraMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!stacksReady)
-            return;
-
-
         if( transitionTime < transitionDuration )
         {
             float transitionProgress = transitionTime / transitionDuration;
@@ -53,8 +47,6 @@ public class CameraMovement : MonoBehaviour
         startedRotation = transform.rotation;
 
         transitionTime = 0f;
-
-        stacksReady = true;
     }
 
     private Vector3 CalculateDesiredCameraPosition(int stackIndex)
